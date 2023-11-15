@@ -27,6 +27,9 @@ services:
       - laravel
 
   db:
+
+    volumes:
+      - ./mysql/logs:/var/log/mysql
     image: mysql:latest
 
     environment:
