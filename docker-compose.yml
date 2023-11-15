@@ -1,0 +1,44 @@
+version: '3'
+
+services:
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    volumes:
+      - .:/var/www/html
+    environment:
+      - DB_HOST=db
+      - DB_DATABASE=laravel
+      - DB_USERNAME=root
+      - DB_PASSWORD=password
+    networks:
+      - laravel
+
+  web:
+    image: nginx:latest
+    volumes:
+      - ./nginx.conf:/etc/nginx/conf.d/default.conf
+    ports:
+      - "80:80"
+    depends_on:
+      - app
+    networks:
+      - laravel
+
+  db:
+    image: mysql:latest
+
+    environment:
+      MYSQL_DATABASE: laravel
+      MYSQL_ROOT_PASSWORD: password
+      MYSQL_USER: laravel
+      MYSQL_PASSWORD: password
+    networks:
+      - laravel
+
+
+networks:
+  laravel:
+  
+
